@@ -37,72 +37,65 @@
 #include "em_device.h"
 #include "hal-config-types.h"
 
-#define HAL_BUTTON_COUNT (2U)
-#define HAL_BUTTON_ENABLE                                                                                                          \
-    {                                                                                                                              \
-        0, 1                                                                                                                       \
-    }
+#ifndef HAL_VCOM_ENABLE
+#define HAL_VCOM_ENABLE (0)
+#endif
+#ifndef HAL_I2CSENSOR_ENABLE
+#define HAL_I2CSENSOR_ENABLE (0)
+#endif
 
+#ifndef HAL_SPIDISPLAY_ENABLE
+#define HAL_SPIDISPLAY_ENABLE (1)
+#endif
+#define HAL_SPIDISPLAY_EXTCOMIN_CALLBACK
+#if defined(FEATURE_IOEXPANDER)
+#define HAL_SPIDISPLAY_EXTMODE_EXTCOMIN (0)
+#else
+#define HAL_SPIDISPLAY_EXTMODE_EXTCOMIN (1)
+#endif
+#define HAL_SPIDISPLAY_EXTMODE_SPI (0)
+#define HAL_SPIDISPLAY_EXTCOMIN_USE_PRS (0)
+#define HAL_SPIDISPLAY_EXTCOMIN_USE_CALLBACK (0)
+#define HAL_SPIDISPLAY_FREQUENCY (1000000)
+
+// $[CMU]
 #define HAL_CLK_HFCLK_SOURCE (HAL_CLK_HFCLK_SOURCE_HFXO)
-#define HAL_CLK_LFACLK_SOURCE (HAL_CLK_LFCLK_SOURCE_LFRCO)
-#define HAL_CLK_LFBCLK_SOURCE (HAL_CLK_LFCLK_SOURCE_LFRCO)
 #define HAL_CLK_LFECLK_SOURCE (HAL_CLK_LFCLK_SOURCE_LFRCO)
+#define HAL_CLK_LFBCLK_SOURCE (HAL_CLK_LFCLK_SOURCE_LFRCO)
+#define HAL_CLK_LFACLK_SOURCE (HAL_CLK_LFCLK_SOURCE_LFRCO)
 #define HAL_CLK_HFXO_AUTOSTART (HAL_CLK_HFXO_AUTOSTART_NONE)
 
+// $[DCDC]
 #define HAL_DCDC_BYPASS (0)
 
-#define HAL_LED_COUNT (2U)
-#define HAL_LED_ENABLE                                                                                                             \
-    {                                                                                                                              \
-        0, 1                                                                                                                       \
-    }
-
+// $[PA]
 #define HAL_PA_ENABLE (1)
-
-#define HAL_PTI_ENABLE (1)
 #define HAL_PTI_MODE (HAL_PTI_MODE_UART)
 #define HAL_PTI_BAUD_RATE (1600000)
 
-#define HAL_SERIAL_RXWAKE_ENABLE (0)
-#define HAL_SERIAL_IDLE_WAKE_ENABLE (1)
-#define HAL_SERIAL_LEUART0_ENABLE (0)
+
+// $[SERIAL]
 #define HAL_SERIAL_USART0_ENABLE (0)
+#define HAL_SERIAL_LEUART0_ENABLE (0)
 #define HAL_SERIAL_USART1_ENABLE (0)
 #define HAL_SERIAL_USART2_ENABLE (0)
 #define HAL_SERIAL_USART3_ENABLE (0)
+#define HAL_SERIAL_RXWAKE_ENABLE (0)
 
-#define HAL_SERIAL_APP_BAUD_RATE (115200UL)
-#define HAL_SERIAL_APP_FLOW_CONTROL (HAL_USART_FLOW_CONTROL_NONE)
-#define HAL_SERIAL_APP_RXSTOP (16UL)
-#define HAL_SERIAL_APP_RXSTART (16UL)
-#define HAL_SERIAL_APP_TX_QUEUE_SIZE (128UL)
-#define HAL_SERIAL_APP_RX_QUEUE_SIZE (128UL)
-
-#define HAL_SPIDISPLAY_ENABLE (1)
-
-#define HAL_SPIDISPLAY_EXTMODE_EXTCOMIN (1)
-#define HAL_SPIDISPLAY_EXTMODE_SPI (0)
-#define HAL_SPIDISPLAY_EXTCOMIN_USE_CALLBACK (1)
-#define HAL_SPIDISPLAY_EXTCOMIN_CALLBACK rtcIntCallbackRegister
-#define HAL_SPIDISPLAY_EXTCOMIN_USE_PRS (0)
-
-#define HAL_SPIDISPLAY_FREQUENCY (1000000UL)
+#define HAL_SERIAL_APP_RX_QUEUE_SIZE (128)
+#define HAL_SERIAL_APP_BAUD_RATE (115200)
+#define HAL_SERIAL_APP_RXSTOP (16)
+#define HAL_SERIAL_APP_RXSTART (16)
+#define HAL_SERIAL_APP_TX_QUEUE_SIZE (128)
+#define HAL_SERIAL_APP_FLOW_CONTROL (HAL_USART_FLOW_CONTROL_HWUART)
 
 #define HAL_USART0_ENABLE (1)
-
-#define HAL_USART0_BAUD_RATE (115200UL)
+#define HAL_USART0_RX_QUEUE_SIZE (128)
+#define HAL_USART0_BAUD_RATE (115200)
+#define HAL_USART0_RXSTOP (16)
+#define HAL_USART0_RXSTART (16)
+#define HAL_USART0_TX_QUEUE_SIZE (128)
 #define HAL_USART0_FLOW_CONTROL (HAL_USART_FLOW_CONTROL_NONE)
-#define HAL_USART0_RXSTOP (16UL)
-#define HAL_USART0_RXSTART (16UL)
-#define HAL_USART0_TX_QUEUE_SIZE (128UL)
-#define HAL_USART0_RX_QUEUE_SIZE (128UL)
-
-#define HAL_USART1_ENABLE (1)
-#define HAL_USART1_FREQUENCY (1000000UL)
-
-#ifndef HAL_VCOM_ENABLE
-#define HAL_VCOM_ENABLE (1)
-#endif
 
 // $[BTL_BUTTON]
 
@@ -133,7 +126,7 @@
 #define BSP_CLK_HFXO_PRESENT (1)
 #define BSP_CLK_HFXO_FREQ (38400000UL)
 #define BSP_CLK_HFXO_INIT CMU_HFXOINIT_DEFAULT
-#define BSP_CLK_HFXO_CTUNE (331)
+#define BSP_CLK_HFXO_CTUNE (327)
 #define BSP_CLK_LFXO_PRESENT (1)
 #define BSP_CLK_LFXO_INIT CMU_LFXOINIT_DEFAULT
 #define BSP_CLK_LFXO_FREQ (32768U)
@@ -211,7 +204,7 @@
 
 // $[PA]
 
-#define BSP_PA_VOLTAGE (1800U)
+#define BSP_PA_VOLTAGE (3300U)
 // [PA]$
 
 // $[PRS]
